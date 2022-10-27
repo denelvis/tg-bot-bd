@@ -1,0 +1,28 @@
+---
+stages:
+  - build
+  - push
+  - deploy
+
+build:
+  stage: build
+  script:
+    - docker build -t harbor.ru/edu/bot_telegram:latest .
+  only:
+    - master
+
+push:
+  stage: push
+  script:
+    - docker push harbor.ru/edu/bot_telegram:latest
+  only:
+    - master
+
+deploy:
+  stage: deploy
+  script:
+    #- kubectl delete edu-telegram-bot -n edu
+    - kubectl apply -f edu_telegram.yaml
+  only:
+    - master
+...   
